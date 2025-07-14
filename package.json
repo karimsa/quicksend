@@ -1,14 +1,11 @@
 {
 	"type": "module",
-	"name": "@karimsa/quicksend",
+	"name": "quicksend",
 	"version": "0.2.0",
 	"main": "dist/cli.js",
 	"bin": "dist/cli.js",
 	"license": "MIT",
 	"packageManager": "yarn@4.9.2",
-	"publishConfig": {
-		"access": "public"
-	},
 	"scripts": {
 		"dev": "nodemon -e ts -w src --exec 'yarn build'",
 		"build": "esbuild src/cli.ts --outfile=dist/cli.js --bundle --platform=node --target=node20 --format=esm --packages=external",
