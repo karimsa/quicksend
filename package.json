@@ -8,7 +8,7 @@
 	"packageManager": "yarn@4.9.2",
 	"scripts": {
 		"dev": "nodemon -e ts -w src --exec 'yarn build'",
-		"build": "esbuild src/cli.ts --outfile=dist/cli.js --bundle --platform=node --target=node20 --format=esm --packages=external",
+		"build": "esbuild src/cli.ts --outfile=dist/cli.js --minify --bundle --platform=node --target=node20 --format=esm --packages=external",
 		"postbuild": "chmod +x dist/cli.js",
 		"format": "prettier --write .",
 		"lint": "oxlint && prettier --check .",
