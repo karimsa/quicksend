@@ -12,7 +12,10 @@
 	"scripts": {
 		"dev": "nodemon -e ts -w src --exec 'yarn build'",
 		"build": "esbuild src/cli.ts --outfile=dist/cli.js --bundle --platform=node --target=node20 --format=esm --packages=external",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"lint": "oxlint",
+		"test:types": "tsc --noEmit",
+		"test": "yarn lint && yarn test:types"
 	},
 	"devDependencies": {
 		"@types/minimist": "^1",
