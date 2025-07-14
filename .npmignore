@@ -1,1 +1,11 @@
 .yarn
+.github
+.vscode
+src
+.oxlintrc.json
+.prettierignore
+.prettierrc
+.yarnrc.yml
+noop-reply.xml
+tsconfig.json
+yarn.lock
