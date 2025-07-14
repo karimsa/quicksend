@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"name": "quicksend",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"main": "dist/cli.js",
 	"bin": "dist/cli.js",
 	"license": "MIT",
