@@ -1,5 +1,3 @@
-import readline from 'node:readline';
-
 import { loadConfigOrThrow } from '../config';
 import { createTwilioClient } from '../twilio';
 
@@ -8,11 +6,13 @@ export async function grepCommand({
 	message,
 	multiple,
 	recipient,
+	quiet,
 }: {
 	pattern: string;
 	message: string;
 	multiple?: boolean;
 	recipient?: string;
+	quiet?: boolean;
 }) {
 	const config = await loadConfigOrThrow();
 
@@ -25,26 +25,24 @@ export async function grepCommand({
 
 	const client = await createTwilioClient();
 
-	// Read line by line from stdin.
-	const lines = readline.createInterface({
-		input: process.stdin,
-		crlfDelay: Infinity,
-	});
-
 	let hasSentMessage = false;
 
-	for await (const line of lines) {
-		if (!compiledPattern.test(line)) {
-			continue;
-		}
+	for await (const chunk of process.stdin) {
+		process.stdout.write(chunk);
 
-		if (multiple || !hasSentMessage) {
-			hasSentMessage = true;
-			await client.messages.create({
-				body: message,
-				from: config.outgoingPhoneNumber,
-				to: targetRecipient,
-			});
+		for (const line of chunk.toString().split('\n')) {
+			if (compiledPattern.test(line) && (multiple || !hasSentMessage)) {
+				hasSentMessage = true;
+				await client.messages.create({
+					body: message,
+					from: config.outgoingPhoneNumber,
+					to: targetRecipient,
+				});
+
+				if (!quiet) {
+					console.log(`Sent message to ${targetRecipient}`);
+				}
+			}
 		}
 	}
 }
