@@ -5,6 +5,7 @@ import { program } from 'commander';
 import { initCommand } from './commands/init';
 import { grepCommand } from './commands/grep';
 import { sendCommand } from './commands/send';
+import { receiveCommand } from './commands/receive';
 
 program.option('-q, --quiet', "Don't show any output");
 
@@ -36,5 +37,10 @@ program
 		'If multiple is passed, sends a message for every match',
 	)
 	.action(grepCommand);
+
+program
+	.command('receive')
+	.description('Receives a single message')
+	.action(receiveCommand);
 
 program.parse();

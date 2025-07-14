@@ -129,7 +129,7 @@ export async function initCommand() {
 			type: 'select',
 			name: 'phoneNumber',
 			message: 'Select a phone number',
-			initial: config?.outgoingPhoneNumber,
+			// initial: config?.outgoingPhoneNumber,
 			choices: phoneNumbers.map((phoneNumber) => ({
 				title: phoneNumber.phoneNumber,
 				value: phoneNumber.phoneNumber,
@@ -143,6 +143,22 @@ export async function initCommand() {
 			},
 		},
 	]);
+
+	// Update phone number's incoming webhook
+	const phoneNumber = phoneNumbers.find(
+		(phoneNumber) =>
+			phoneNumber.phoneNumber === selectedPhoneNumber.phoneNumber,
+	);
+	if (!phoneNumber) {
+		throw new Error(
+			`Phone number not found in account (${selectedPhoneNumber.phoneNumber})`,
+		);
+	}
+
+	await client.incomingPhoneNumbers(phoneNumber.sid).update({
+		smsUrl: `https://raw.githubusercontent.com/karimsa/quicksend/refs/heads/main/noop-reply.xml`,
+		smsMethod: 'POST',
+	});
 
 	await updateConfig({
 		accountSid: updatedApiCredentials.accountSid,

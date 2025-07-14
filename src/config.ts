@@ -44,7 +44,17 @@ export async function loadConfigOrThrow() {
 }
 
 export async function updateConfig(config: z.infer<typeof configSchema>) {
+	const existingConfig = await loadConfig();
 	const validatedConfig = configSchema.parse(config);
-	const text = JSON.stringify(validatedConfig, null, 2);
+
+	const text = JSON.stringify(
+		{
+			...existingConfig,
+			...validatedConfig,
+		},
+		null,
+		2,
+	);
+
 	await fs.writeFile(configFilePath, text);
 }
