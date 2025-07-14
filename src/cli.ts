@@ -10,8 +10,6 @@ import { receiveCommand } from './commands/receive';
 
 program.version(version);
 
-program.option('-q, --quiet', "Don't show any output");
-
 program
 	.command('init')
 	.description('Initialize config file (required to do anything else)')
@@ -25,6 +23,7 @@ program
 		'-r, --recipient <recipient>',
 		'The recipient phone number (default: from config)',
 	)
+	.option('-q, --quiet', "Don't show any output")
 	.action(sendCommand);
 
 program
@@ -39,11 +38,13 @@ program
 		'-x, --multiple',
 		'If multiple is passed, sends a message for every match',
 	)
+	.option('-q, --quiet', "Don't show any output")
 	.action(grepCommand);
 
 program
 	.command('receive')
 	.description('Receives a single message')
+	.option('-q, --quiet', "Don't show any output")
 	.action(receiveCommand);
 
 program.parse();
