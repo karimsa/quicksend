@@ -6,34 +6,13 @@ Utilities for sending and receiving text messages in your terminal.
 
 quicksend can be installed and updated as a normal node package.
 
-<details>
-<summary>npm</summary>
-
 ```bash
-npm install -g quicksend
+npm install -g @karimsa/quicksend
 ```
-
-</details>
-
-<details>
-<summary>yarn</summary>
-
-```bash
-yarn global add quicksend
-```
-
-</details>
-
-<details>
-<summary>pnpm</summary>
-
-```bash
-pnpm add -g quicksend
-```
-
-</details>
 
 After installation, run `quicksend init` to setup your account.
+
+Note: `npx` does not play nice with this package, it doesn't like that the package is scoped.
 
 ## Sending messages
 
