@@ -60,6 +60,10 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Check package.json
+        run: |
+          cat package.json
+
       - name: Setup for deploy
         if: ${{ startsWith(github.ref, 'refs/tags/v') && matrix.node == 20 }}
         run: |
