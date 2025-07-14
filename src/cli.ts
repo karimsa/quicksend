@@ -26,9 +26,13 @@ program
 program
 	.command('grep')
 	.description('Sends a message when a pattern matches stdin')
-	.option('-p, --pattern <pattern>', 'The pattern to match')
+	.requiredOption('-p, --pattern <pattern>', 'The pattern to match')
+	.requiredOption(
+		'-m, --message <message>',
+		'The message to send when pattern matches',
+	)
 	.option(
-		'-m, --multiple',
+		'-x, --multiple',
 		'If multiple is passed, sends a message for every match',
 	)
 	.action(grepCommand);

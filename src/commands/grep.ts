@@ -5,10 +5,12 @@ import { createTwilioClient } from '../twilio';
 
 export async function grepCommand({
 	pattern,
+	message,
 	multiple,
 	recipient,
 }: {
 	pattern: string;
+	message: string;
 	multiple?: boolean;
 	recipient?: string;
 }) {
@@ -39,7 +41,7 @@ export async function grepCommand({
 		if (multiple || !hasSentMessage) {
 			hasSentMessage = true;
 			await client.messages.create({
-				body: line,
+				body: message,
 				from: config.outgoingPhoneNumber,
 				to: targetRecipient,
 			});
