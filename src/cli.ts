@@ -2,10 +2,13 @@
 
 import { program } from 'commander';
 
+import { version } from '../package.json';
 import { initCommand } from './commands/init';
 import { grepCommand } from './commands/grep';
 import { sendCommand } from './commands/send';
 import { receiveCommand } from './commands/receive';
+
+program.version(version);
 
 program.option('-q, --quiet', "Don't show any output");
 
