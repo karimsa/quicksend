@@ -5,6 +5,10 @@
 	"main": "dist/cli.js",
 	"bin": "dist/cli.js",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/karimsa/quicksend.git"
+	},
 	"packageManager": "yarn@4.9.2",
 	"scripts": {
 		"dev": "nodemon -e ts -w src --exec 'yarn build'",
