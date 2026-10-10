@@ -43,7 +43,9 @@ program
 
 program
 	.command('receive')
-	.description('Receives a single message')
+	.description('Receives incoming messages')
+	.option('--follow', 'Continue receiving messages until interrupted')
+	.option('--output <file>', 'Append received messages to a JSONL file')
 	.option('-q, --quiet', "Don't show any output")
 	.action(receiveCommand);
 
