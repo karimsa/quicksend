@@ -1,36 +1,60 @@
 # quicksend
 
-Utilities for sending and receiving text messages in your terminal.
-
-## Installation
-
-quicksend can be installed globally or used via `npx` / `yarn dlx`.
+Text yourself from your terminal. Get notified when a command finishes, watch for
+replies, or save incoming messages as JSONL.
 
 ```bash
-npx quicksend init
+npm run build && quicksend send -m "Build finished"
 ```
 
-OR
+## Quick start
+
+Install quicksend and run the interactive setup:
 
 ```bash
 npm install -g quicksend
+quicksend init
 ```
+
+You'll need a Twilio account. Setup asks for your API credentials, lets you choose
+a Twilio phone number and a default recipient, and sends a test message.
+
+Then send yourself a text:
+
+```bash
+quicksend send -m "Hello from my terminal"
+```
+
+Prefer to skip the global install? Use `npx quicksend` in place of `quicksend`,
+starting with `npx quicksend init`.
 
 ## Sending messages
 
-Send a text message:
+### Notify me when something finishes
+
+Send a text after a command succeeds:
 
 ```bash
-quicksend send -m "Hello, world!"
+npm run build && quicksend send -m "Build finished"
 ```
 
-Send a message to a specific recipient:
+Or notify yourself when it fails:
 
 ```bash
-quicksend send -m "Hello, world!" -r "+1234567890"
+npm run build || quicksend send -m "Build failed"
 ```
 
-Send one message when a pattern is first found in a log stream:
+### Send to a specific number
+
+Override the default recipient with `-r`:
+
+```bash
+quicksend send -m "Deployment finished" -r "+1234567890"
+```
+
+### Watch for an error
+
+Send one text when the first matching line appears in a log stream:
 
 ```bash
 tail -f /var/log/syslog | grep -m 1 "error" | while IFS= read -r line; do
@@ -38,32 +62,58 @@ tail -f /var/log/syslog | grep -m 1 "error" | while IFS= read -r line; do
 done
 ```
 
+Replace `/var/log/syslog` with the log file you want to watch.
+
 ## Receiving messages
 
-This command will block until a message is received.
+### Wait for a reply
+
+Wait for one incoming message, print its body, and exit:
 
 ```bash
-quicksend receive -q
+quicksend receive
 ```
 
-To print incoming messages continuously until Ctrl+C or SIGTERM:
+Start listening before sending a message if you're expecting a reply. Receive
+checks for messages sent after listening starts.
+
+To keep printing incoming messages until Ctrl+C or SIGTERM:
 
 ```bash
 quicksend receive --follow
 ```
 
-Add `-q` to keep listening without printing messages.
+### Save incoming messages
 
-Append each received message as a JSON object on its own line:
+Append messages to a JSONL file while also printing their bodies to stdout:
 
 ```bash
 quicksend receive --follow --output messages.jsonl
 ```
 
-The file is created if needed. Existing contents are preserved. Each record contains
-the Twilio message fields, including its SID, body, sender, recipient, and timestamps.
-Without `--follow`, the command appends the first received message and exits.
-Message bodies still print to stdout unless `-q` is supplied, which only silences stdout.
+Each line contains a JSON object with the Twilio message fields, including its SID,
+body, sender, recipient, and timestamps. The file is created if needed, and existing
+contents are preserved. Without `--follow`, only the first received message is
+appended before the command exits.
+
+| Receive option    | Behavior                                                                 |
+| ----------------- | ------------------------------------------------------------------------ |
+| `--follow`        | Keep receiving until Ctrl+C or SIGTERM.                                  |
+| `--output <file>` | Append each received message as JSONL. Works with or without `--follow`. |
+| `-q`, `--quiet`   | Suppress stdout. Messages still append to `--output` if supplied.        |
+
+## Agent skill
+
+Install the quicksend skill with Vercel's skills CLI:
+
+```bash
+npx skills add karimsa/quicksend --skill quicksend
+```
+
+The skill teaches your agent how to send and receive texts with quicksend. After
+running `quicksend init`, try asking:
+
+> Text me when the tests finish.
 
 ## License
 

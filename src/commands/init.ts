@@ -210,4 +210,8 @@ export async function initCommand() {
 
 		console.log(`Sent text message to your phone!`);
 	}
+
+	console.log('');
+	console.log('Install the quicksend skill for your agent:');
+	console.log('  npx skills add karimsa/quicksend --skill quicksend');
 }
