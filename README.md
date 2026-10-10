@@ -30,10 +30,12 @@ Send a message to a specific recipient:
 quicksend send -m "Hello, world!" -r "+1234567890"
 ```
 
-Send a message when a pattern is found in a log stream:
+Send one message when a pattern is first found in a log stream:
 
 ```bash
-tail -f /var/log/syslog | quicksend grep -p "error" -m "Error found in logs"
+tail -f /var/log/syslog | grep -m 1 "error" | while IFS= read -r line; do
+  quicksend send -m "Error found in logs"
+done
 ```
 
 ## Receiving messages
